@@ -19,7 +19,7 @@ When(
     console.log("🟢 Token address entered");
   }
 );
-Then("the user click submit button", async()=> {
+Then("the user clicks the Submit button", async()=> {
 
     const submitButton = page.locator(
         "[data-test='InputAddress__Button__submit']"

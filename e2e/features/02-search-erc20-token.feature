@@ -13,8 +13,8 @@ Feature: Search ERC20 tokens
   @search_token_valid
   Scenario: The user can search for an existing ERC20 token and see his balance and deposit history for the selected token.
     And the user enters the address "0x9982f9A3bA28c34aD03737745d956EC0668ea440" in the input address field
-    Then the user click submit button
-    And the page shows the address balance for the selected token
+    And the user clicks the Submit button
+    Then the page shows the address balance for the selected token
     And the page shows the table of the deposit history for the selected token
 
   @click_token_link
