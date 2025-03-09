@@ -110,3 +110,46 @@ Then("the page doesn't show a network error message", async () => {
 
   console.log("🟢 No network error message detected!");
 });
+Then("the page shows a network error message", async () => {
+  console.log("✅ Checking for network error message...");
+//  Ensure focus is on the first tab (localhost)
+const pages = await context.pages();
+const localhostPage = pages.find(p => p.url().includes("localhost"));
+
+if (localhostPage) {
+  console.log("🔄 Bringing localhost tab into focus...");
+  await localhostPage.bringToFront();
+  console.log("🟢 Localhost tab is now active.");
+}
+
+// Refresh the page to ensure network error message is visible
+console.log("🔄 Refreshing the page...");
+await page.reload();
+console.log("🟢 Page refreshed successfully");
+
+  const errorMessage = await page.locator('[data-test="MetaMaskConnector__Div__error"]').textContent();
+
+  expect(errorMessage).not.toBeNull();
+  expect(errorMessage).toContain("It seems like your MetaMask plugin is not present or the network chain is not already configured");
+  console.log("🟢 Network error message is displayed!");
+});
+
+Then("the page shows the switch network button", async () => {
+  console.log("✅ Checking for switch network button...");
+
+  const switchNetworkButton = page.locator("[data-test='MetaMaskConnector__Button__connect']");
+
+  await expect(switchNetworkButton).toBeVisible();
+  await expect(switchNetworkButton).toHaveText("Connect Metamask to Sepolia");
+
+  console.log("🟢 Switch network button is visible!");
+});
+
+Then("the page doesn't show the input address field", async () => {
+  console.log("✅ Checking if the input address field is hidden...");
+
+  const inputAddressField = await page.locator('[data-test="InputAddress__Input__addressValue"]');
+
+  await expect(inputAddressField).not.toBeVisible();
+  console.log("🟢 Input address field is not visible!");
+});

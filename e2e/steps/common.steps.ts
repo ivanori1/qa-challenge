@@ -36,7 +36,11 @@ Given("A user with metamask installed connected to {string} network", { timeout:
     seed: process.env.METAMASK_SEED
   });
   console.log("✅ Wallet imported successfully!");
-
+ 
+ if (network === "Ethereum Mainnet") {
+   console.log("⚠️ Already on Ethereum Mainnet, skipping network switch.");
+   return;
+ }
   //  Ensure network switch happens properly
   const switched = await metamask.switchNetwork(network);
   console.log(`🟢 Successfully switched to ${network}`);
@@ -50,6 +54,11 @@ When("the user accesses the app page", async () => {
   await page.goto(process.env.APP_URL || "https://localhost:3000");
 
   console.log("🟢 App page loaded successfully");
+
+
+  // Refresh the page to ensure network error message is visible
+  await page.reload();
+  console.log("🔄 Page refreshed successfully");
 });
 
 export { page, metamask, context };
