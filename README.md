@@ -1,3 +1,172 @@
+# QA Automation for dApp Testing
+
+## 📌 Project Overview
+This project automates the testing of a dApp that interacts with **MetaMask** using **Dappwright** and **Cucumber.js**. The tests verify:
+- Wallet connection and authentication
+- Network switching (e.g., Sepolia, Mainnet)
+- UI elements and error messages
+- Transaction confirmations
+
+---
+
+## 🚀 Getting Started
+
+### 📂 Prerequisites
+Before running the tests, make sure you have:
+- **Node.js** (`>=16.x` recommended)
+- **npm** or **yarn**
+- **Google Chrome** installed
+- **MetaMask** extension (automatically installed by Dappwright)
+
+### 📥 Installation
+Clone the repository and install dependencies:
+
+```sh
+# Clone the repository
+git clone https://github.com/your-company/repository.git
+cd repository
+
+# Install dependencies
+npm install
+```
+
+### ⚙️ Environment Configuration
+Create a `.env.local` file in the root directory:
+
+```ini
+METAMASK_SEED="your-mnemonic-seed-phrase"
+APP_URL="http://localhost:3000"
+```
+
+Ensure your **MetaMask seed phrase** is correctly set for automated login.
+
+---
+
+### 🚢 Run with Docker Compose
+
+1. Open a terminal at the root path of this project
+2. Execute the following command:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+## 🏃 Running the Tests
+
+### Run all tests:
+```sh
+npm run test
+```
+
+### Run a specific test scenario:
+```sh
+npx cucumber-js --tags "@wallet"
+```
+
+### Run tests with debug logs:
+```sh
+DEBUG=cucumber:* npm run test
+```
+
+---
+
+## 🧪 Test Results & Reports
+
+### 📄 HTML & JSON Reports
+Test reports are generated automatically and stored in:
+```
+e2e/test-results/
+```
+To view the HTML report, open:
+```
+e2e/test-results/cucumber-report.html
+```
+
+### 🎥 Video Demo
+A full test execution video is available at:
+[📹 Watch the test execution](TO_BE_ADDED)
+
+---
+
+## 🛠️ Features & Implementations
+
+### ✅ Implemented Tests
+- **MetaMask Setup:** Automatically installs and configures MetaMask.
+- **Wallet Connection:** Ensures MetaMask connects to the dApp.
+- **Network Switching:** Verifies switching between testnet and mainnet.
+- **UI Validations:** Checks elements like account address, error messages.
+- **Transaction Confirmations:** Automates approving transactions within MetaMask.
+
+### 📌 Notable Workarounds
+Since MetaMask does not always automatically show the connection request, we implemented a **UI-based workaround**:
+1. **Check MetaMask API for a pending connection request**
+2. **If not found, navigate manually through MetaMask's UI**
+3. **Approve connection via UI steps**
+
+This ensures that even if the API method fails, the connection process will proceed.
+
+---
+
+## 🔄 Updating the Tests
+To modify existing tests or add new ones, follow this structure:
+
+```
+├── e2e/
+│   ├── features/                # Cucumber feature files
+│   ├── steps/                   # Step definitions
+│   ├── test-results/            # Test reports (HTML, JSON)
+│   ├── playwright.config.ts     # Page Object Model (POM)
+│   ├── tsconfig.e2e.json        # TypeScript config for E2E tests
+```
+
+### 📜 Step Naming & File Structure
+Each `.feature` file under `e2e/features/` should have a corresponding `.steps.ts` file under `e2e/steps/`. 
+The naming convention should follow:
+- If the feature file is named `01-app-access.feature`, its corresponding steps file should be `01-app-access.steps.ts`.
+- Commonly used steps should be placed in `common.steps.ts`.
+- Each step function should describe **one distinct action**.
+
+Example:
+```gherkin
+Feature: Wallet Connection
+  Scenario: User connects MetaMask to the dApp
+    Given A user with MetaMask installed connected to "Sepolia" network
+    When the user accesses the app page
+    Then the page shows the account address
+```
+
+### 📌 Importance of `common.steps.ts`
+The `common.steps.ts` file is used to:
+- **Initialize** and **share** the browser, page, and MetaMask instance.
+- Ensure all test steps **reuse the same session** instead of creating their own.
+- Improve test performance by avoiding redundant launches of the browser.
+
+#### ✅ Why Should Other Step Files Inherit From `common.steps.ts`?
+Instead of creating their own instances of `page`, `MetaMaskWallet`, or `browser`, all step files should **import from `common.steps.ts`** to:
+- Prevent **session duplication**.
+- Keep **consistent browser state** across all tests.
+- Avoid **unexpected issues** related to multiple browser contexts.
+
+Example:
+```ts
+import { Given, When, Then } from "@cucumber/cucumber";
+import { page, metamask, browser } from "../common.steps";
+
+When("the user accesses the app page", async () => {
+  await page.goto(process.env.APP_URL || "http://localhost:3000");
+});
+```
+
+By following this structure, tests remain efficient, maintainable, and easier to debug.
+
+---
+
+## 📞 Support & Contributions
+For any issues or enhancements, feel free to create a **GitHub Issue**. 🚀
+
+
+
+
 # QA Libre Challenge
 
 ## Table of Contents
