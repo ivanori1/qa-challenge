@@ -84,7 +84,7 @@ e2e/test-results/cucumber-report.html
 
 ### 🎥 Video Demo
 A full test execution video is available at:
-[📹 Watch the test execution](TO_BE_ADDED)
+[📹 Watch the test execution](https://drive.google.com/file/d/1W9VnezF_GsvxrJYPE_Y-Y5uAbjZF9KvZ/view?usp=drive_link)
 
 ---
 

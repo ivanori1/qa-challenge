@@ -63,7 +63,6 @@ Then("the page shows the account address", async () => {
   console.log(
     "✅ Verifying that the page displays the correct connected account address..."
   );
-
   const expectedAddress = await page.evaluate(async () => {
     const accounts = await (window as any).ethereum.request({
       method: "eth_requestAccounts",
@@ -77,6 +76,7 @@ Then("the page shows the account address", async () => {
   const connectedAddressElement = page.locator(
     "[data-test='MetaMaskConnector__Div__connect']"
   );
+  page.reload()
 
   // Wait for the element to be visible
   await connectedAddressElement.waitFor({ state: "visible", timeout: 5000 });
